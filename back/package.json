@@ -4,7 +4,6 @@
   "main": "index.js",
   "type": "module",
   "private": true,
-  
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
