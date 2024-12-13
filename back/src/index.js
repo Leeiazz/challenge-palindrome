@@ -16,6 +16,8 @@ app.get('/ping', async (req, res) => {
   res.send({ message: 'pong' });
 });
 
+// Variable local para los registros historicos, la idea sería siempre mantenerlo
+// en una base de datos, pero para el challenge lo vamos a mantener en memoria
 const registers = [];
 
 app.get('/historical', async (req, res) => {
