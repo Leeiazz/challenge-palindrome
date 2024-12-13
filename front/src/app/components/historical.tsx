@@ -1,15 +1,13 @@
+'use client';
 import AffirmativeIcon from '../icons/AffirmativeIcon';
 import NegativeIcon from '../icons/NegativeIcon';
 import { RegisterInterface } from '../interfaces/register';
 
-export default async function Historical() {
-  const response = await fetch('http://localhost:3000/historical');
-  const data = await response.json();
-  const registers: RegisterInterface[] = data.registers;
-  const registersSorted = registers.sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-  );
-
+export default function Historical({
+  registers,
+}: {
+  registers: RegisterInterface[];
+}) {
   return registers.length > 0 ? (
     <div className='w-full max-w-md mt-10 p-4 bg-lead-50 border border-lead-200 rounded-lg shadow sm:p-8 dark:bg-lead-800 dark:border-lead-700'>
       <div className='flex items-center justify-between mb-4'>
@@ -22,7 +20,7 @@ export default async function Historical() {
           role='list'
           className='divide-y divide-lead-200 dark:divide-lead-700'
         >
-          {registersSorted.map((register, index) => (
+          {registers.map((register, index) => (
             <li className='py-3 sm:py-4' key={register.date + index}>
               <div className='flex items-center'>
                 <div className='flex-1 min-w-0 ms-4'>

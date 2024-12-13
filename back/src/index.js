@@ -19,9 +19,15 @@ app.get('/ping', async (req, res) => {
 // en una base de datos, pero para el challenge lo vamos a mantener en memoria
 const registers = [];
 
+const getRegisters = () => {
+  return registers.sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  );
+};
+
 app.get('/historical', async (req, res) => {
   try {
-    res.send({ registers });
+    res.send({ registers: getRegisters() });
   } catch (error) {
     console.log(error);
     res.status(500).send({ registers: [], message: error.message });
@@ -38,7 +44,7 @@ app.post('/verify-palindrome', async (req, res) => {
       registers.push({ text, isPalindrome: true, date: new Date() });
       res.send({
         isPalindrome: true,
-        registers,
+        registers: getRegisters(),
         message: `La ${
           text.includes(' ') ? 'frase' : 'palabra'
         } "${text}" es palíndromo`,
@@ -47,7 +53,7 @@ app.post('/verify-palindrome', async (req, res) => {
       registers.push({ text, isPalindrome: false, date: new Date() });
       res.send({
         isPalindrome: false,
-        registers,
+        registers: getRegisters(),
         message: `La ${
           text.includes(' ') ? 'frase' : 'palabra'
         } "${text}" no es palíndromo`,

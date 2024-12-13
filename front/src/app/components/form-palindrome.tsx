@@ -1,9 +1,13 @@
 'use client';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import LoadingIcon from '../icons/LoadingIcon';
-import { useRouter } from 'next/navigation';
+import { RegisterInterface } from '../interfaces/register';
 
-export default function FormPalindrome() {
+export default function FormPalindrome({
+  setRegisters,
+}: {
+  setRegisters: React.Dispatch<React.SetStateAction<RegisterInterface[]>>;
+}) {
   const [inputValue, setinputValue] = useState<string>(``);
   const [loading, setLoading] = useState<boolean>(false);
   const [alert, setAlert] = useState<{
@@ -15,7 +19,6 @@ export default function FormPalindrome() {
     isPalindrome: false,
     message: '',
   });
-  const router = useRouter();
 
   const handleChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
     setinputValue(event.target.value);
@@ -38,11 +41,9 @@ export default function FormPalindrome() {
     });
     const data = await response.json();
     setLoading(false);
-    console.log(data);
     setinputValue('');
     viewAlert(data.isPalindrome, data.message);
-    // Se actualiza la página para que se muestre el nuevo registro ya que al iniciar el componente Historical se realiza la petición HTTP
-    router.refresh();
+    setRegisters(data.registers);
   };
   return (
     <div className='mt-10'>
