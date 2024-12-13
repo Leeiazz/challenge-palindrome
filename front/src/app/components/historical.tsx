@@ -1,55 +1,52 @@
+import AffirmativeIcon from '../icons/AffirmativeIcon';
+import NegativeIcon from '../icons/NegativeIcon';
 import { RegisterInterface } from '../interfaces/register';
 
 export default async function Historical() {
   const response = await fetch('http://localhost:3000/historical');
   const data = await response.json();
   const registers: RegisterInterface[] = data.registers;
-  return registers.length > 0 ? (
-    <HistoricalTable registers={registers}></HistoricalTable>
-  ) : (
-    <p>No hay registros</p>
+  const registersSorted = registers.sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
   );
-}
 
-function HistoricalTable({ registers }: { registers: RegisterInterface[] }) {
-  return (
-    <div className='flex flex-col'>
-      <div className='overflow-x-auto sm:-mx-6 lg:-mx-8'>
-        <div className='inline-block min-w-full py-2 sm:px-6 lg:px-8'>
-          <div className='overflow-hidden'>
-            <table className='min-w-full text-left text-sm font-light'>
-              <thead className='border-b font-medium dark:border-neutral-500'>
-                <tr>
-                  <th scope='col' className='px-6 py-4'>
-                    Texto
-                  </th>
-                  <th scope='col' className='px-6 py-4'>
-                    Palindromo
-                  </th>
-                  <th scope='col' className='px-6 py-4'>
-                    Fecha
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {registers.map((register, index) => (
-                  <tr key={index} className='border-b dark:border-neutral-500'>
-                    <td className='whitespace-nowrap px-6 py-4 font-medium'>
-                      {register.text}
-                    </td>
-                    <td className='whitespace-nowrap px-6 py-4'>
-                      {register.isPalindrome ? 'Si' : 'No'}
-                    </td>
-                    <td className='whitespace-nowrap px-6 py-4'>
-                      {register.date}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
+  return registers.length > 0 ? (
+    <div className='w-full max-w-md mt-10 p-4 bg-lead-50 border border-lead-200 rounded-lg shadow sm:p-8 dark:bg-lead-800 dark:border-lead-700'>
+      <div className='flex items-center justify-between mb-4'>
+        <h5 className='text-xl font-bold leading-none text-gray-900 dark:text-white'>
+          Historial de evaluaciones
+        </h5>
+      </div>
+      <div className='flow-root'>
+        <ul
+          role='list'
+          className='divide-y divide-lead-200 dark:divide-lead-700'
+        >
+          {registersSorted.map((register, index) => (
+            <li className='py-3 sm:py-4' key={register.date + index}>
+              <div className='flex items-center'>
+                <div className='flex-1 min-w-0 ms-4'>
+                  <p className='text-sm font-medium text-lead-900 dark:text-white'>
+                    {register.text}
+                  </p>
+                  <p className='text-sm text-lead-500 truncate dark:text-lead-400'>
+                    {new Date(register.date).toLocaleString()}
+                  </p>
+                </div>
+                <div className='inline-flex items-center text-base font-semibold text-lead-900 dark:text-white'>
+                  {register.isPalindrome ? (
+                    <AffirmativeIcon></AffirmativeIcon>
+                  ) : (
+                    <NegativeIcon></NegativeIcon>
+                  )}
+                </div>
+              </div>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
+  ) : (
+    <p>No hay registros</p>
   );
 }

@@ -39,14 +39,18 @@ app.post('/verify-palindrome', async (req, res) => {
       res.send({
         isPalindrome: true,
         registers,
-        message: `SI es palindromo: ${text}`,
+        message: `La ${
+          text.includes(' ') ? 'frase' : 'palabra'
+        } "${text}" es palíndromo`,
       });
     } else {
       registers.push({ text, isPalindrome: false, date: new Date() });
       res.send({
         isPalindrome: false,
         registers,
-        message: `NO es palindromo: ${text}`,
+        message: `La ${
+          text.includes(' ') ? 'frase' : 'palabra'
+        } "${text}" no es palíndromo`,
       });
     }
   } catch (error) {

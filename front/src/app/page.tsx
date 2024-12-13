@@ -5,7 +5,7 @@ import FormPalindrome from './components/form-palindrome';
 
 export default async function Home() {
   return (
-    <main className='flex min-h-screen flex-col items-center justify-between p-24'>
+    <main className='flex min-h-screen flex-col items-center p-24'>
       <FormPalindrome></FormPalindrome>
       <Suspense fallback={<Loading />}>
         <Historical></Historical>
