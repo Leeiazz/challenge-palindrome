@@ -4,9 +4,7 @@ import LoadingIcon from '../icons/LoadingIcon';
 import { useRouter } from 'next/navigation';
 
 export default function FormPalindrome() {
-  const [inputValue, setinputValue] = useState<string>(
-    `A mamá Roma le aviva el amor a papá y a papá Roma le aviva el amor a mamá`
-  );
+  const [inputValue, setinputValue] = useState<string>(``);
   const [loading, setLoading] = useState<boolean>(false);
   const [alert, setAlert] = useState<{
     show: boolean;
