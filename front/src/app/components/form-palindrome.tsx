@@ -1,8 +1,12 @@
 'use client';
 import { ChangeEvent, FormEvent, useState } from 'react';
+import LoadingIcon from '../icons/LoadingIcon';
 
 export default function FormPalindrome() {
-  const [inputValue, setinputValue] = useState<string>('');
+  const [inputValue, setinputValue] = useState<string>(
+    `A mamá Roma le aviva el amor a papá y a papá Roma le aviva el amor a mamá`
+  );
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
     setinputValue(event.target.value);
@@ -10,10 +14,19 @@ export default function FormPalindrome() {
 
   const verifyPalindrome = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setLoading(true);
     console.log(inputValue);
+    const response = await fetch('http://localhost:3000/verify-palindrome', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text: inputValue }),
+    });
+    const data = await response.json();
+    setLoading(false);
+    console.log(data);
   };
   return (
-    <form onSubmit={verifyPalindrome} className='max-w-sm mx-auto'>
+    <form onSubmit={verifyPalindrome} className='mx-auto w-96'>
       <div className='mb-5'>
         <label
           htmlFor='input-palindrome'
@@ -26,16 +39,19 @@ export default function FormPalindrome() {
           id='input-palindrome'
           value={inputValue}
           onChange={handleChangeInput}
-          className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+          className='bg-lead-700 px-4 py-2 w-full rounded-lg transition-all duration-300 outline-none focus:bg-lead-600 focus:outline-1 focus:outline-lead-100/20'
           placeholder='Escribe aqui...'
           required
         />
       </div>
+
       <button
         type='submit'
-        className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
+        className='text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800 inline-flex items-center
+        disabled:cursor-not-allowed disabled:bg-gray-600 disabled:hover:bg-gray-600'
       >
-        Verificar
+        {loading && <LoadingIcon></LoadingIcon>}
+        {loading ? 'Verificando...' : 'Verificar'}
       </button>
     </form>
   );
