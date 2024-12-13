@@ -16,7 +16,6 @@ export default function Home() {
       setLoading(false);
     };
     fetchRegisters();
-    return () => {};
   }, []);
 
   return (

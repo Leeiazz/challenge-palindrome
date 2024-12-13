@@ -26,9 +26,10 @@ export default function FormPalindrome({
 
   const viewAlert = (isPalindrome: boolean, message: string) => {
     setAlert({ show: true, isPalindrome, message });
+
     setTimeout(() => {
       setAlert({ show: false, isPalindrome, message });
-    }, 3000);
+    }, 1000);
   };
 
   const verifyPalindrome = async (event: FormEvent<HTMLFormElement>) => {
