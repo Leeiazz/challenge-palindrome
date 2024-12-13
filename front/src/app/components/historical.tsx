@@ -2,7 +2,16 @@ import { RegisterInterface } from '../interfaces/register';
 
 export default async function Historical() {
   const response = await fetch('http://localhost:3000/historical');
-  const data: { registers: RegisterInterface[] } = await response.json();
+  const data = await response.json();
+  const registers: RegisterInterface[] = data.registers;
+  return registers.length > 0 ? (
+    <HistoricalTable registers={registers}></HistoricalTable>
+  ) : (
+    <p>No hay registros</p>
+  );
+}
+
+function HistoricalTable({ registers }: { registers: RegisterInterface[] }) {
   return (
     <div className='flex flex-col'>
       <div className='overflow-x-auto sm:-mx-6 lg:-mx-8'>
@@ -23,11 +32,8 @@ export default async function Historical() {
                 </tr>
               </thead>
               <tbody>
-                {data.registers.map((register) => (
-                  <tr
-                    key={register.text}
-                    className='border-b dark:border-neutral-500'
-                  >
+                {registers.map((register, index) => (
+                  <tr key={index} className='border-b dark:border-neutral-500'>
                     <td className='whitespace-nowrap px-6 py-4 font-medium'>
                       {register.text}
                     </td>

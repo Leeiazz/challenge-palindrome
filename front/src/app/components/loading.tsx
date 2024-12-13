@@ -1,3 +1,9 @@
+import LoadingIcon from '../icons/LoadingIcon';
+
 export default function Loading() {
-  return <p>Cargando historial...</p>;
+  return (
+    <p>
+      <LoadingIcon></LoadingIcon> Cargando historial...
+    </p>
+  );
 }

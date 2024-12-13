@@ -12,7 +12,7 @@ app.use(json());
 
 // GET /
 app.get('/ping', async (req, res) => {
-  await new Promise((resolve) => setTimeout(resolve, 3000));
+  // await new Promise((resolve) => setTimeout(resolve, 3000));
   res.send({ message: 'pong' });
 });
 
@@ -22,6 +22,7 @@ const registers = [];
 
 app.get('/historical', async (req, res) => {
   try {
+    // await new Promise((resolve) => setTimeout(resolve, 2000));
     res.send({ registers });
   } catch (error) {
     console.log(error);
@@ -31,6 +32,8 @@ app.get('/historical', async (req, res) => {
 
 app.post('/verify-palindrome', async (req, res) => {
   try {
+    // await new Promise((resolve) => setTimeout(resolve, 2000));
+
     const { text } = req.body;
     if (!text || text.length === 0)
       return res.status(400).send({ message: 'Text is required' });
